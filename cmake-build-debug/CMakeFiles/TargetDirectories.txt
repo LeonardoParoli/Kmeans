@@ -1,0 +1,3 @@
+C:/Users/posta/CLionProjects/KmeansSequential/cmake-build-debug/CMakeFiles/KmeansSequential.dir
+C:/Users/posta/CLionProjects/KmeansSequential/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/posta/CLionProjects/KmeansSequential/cmake-build-debug/CMakeFiles/rebuild_cache.dir
