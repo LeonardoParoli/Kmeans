@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "KmeansSequential.exe"
+			"path" : "Kmeans.exe"
 		},
 		{
-			"path" : "KmeansSequential.pdb"
+			"path" : "Kmeans.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -59,7 +59,7 @@
 			]
 		}
 	],
-	"id" : "KmeansSequential::@6890427a1f51a3e7e1df",
+	"id" : "Kmeans::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -79,8 +79,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "KmeansSequential",
-	"nameOnDisk" : "KmeansSequential.exe",
+	"name" : "Kmeans",
+	"nameOnDisk" : "Kmeans.exe",
 	"paths" : 
 	{
 		"build" : ".",

@@ -49,8 +49,14 @@ int main() {
     std::random_device rd;
     std::mt19937 rng(rd());
     std::shuffle(workPoints, workPoints + numPoints, rng);
-    for (int i = 0; i < numClusters; i++) {
-        selectedCentroids[i] = workPoints[i];
+    std::uniform_real_distribution<double> dist(0.0, 1000.0);
+
+    for (int i = 0; i < numClusters; ++i) {
+        Point point;
+        point.x = dist(rng);
+        point.y = dist(rng);
+        point.z = dist(rng);
+        selectedCentroids[i] = point;
     }
 
     std::cout << "Running K-Means..." << std::endl;
@@ -67,7 +73,10 @@ int main() {
             Point centroid = *cluster.getCentroid();
             outputResultClustersFile << "Cluster " << i << "{" <<std::endl;
             outputResultClustersFile << "[" << centroid.x <<","<< centroid.y <<"," << centroid.z << "]" <<std::endl;
-            outputResultClustersFile << "("<< points[i].x <<","<< points[i].y <<"," << points[i].z <<")" << std::endl;
+            std::vector<Point*> *clusterPoints = cluster.getPoints();
+            for(Point *point : *clusterPoints){
+                outputResultClustersFile << "("<< point->x <<","<< point->y <<"," << point->z <<")" << std::endl;
+            }
             outputResultClustersFile << "}" <<std::endl;
         }
         outputResultClustersFile.close();

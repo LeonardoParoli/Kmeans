@@ -10,23 +10,21 @@ Kluster *KmeansSequentialSolver::getClusters() {
 }
 
 KmeansSequentialSolver::~KmeansSequentialSolver() {
-    delete[] points;
     delete[] clusters;
-    delete[] selectedCentroids;
 }
 
-KmeansSequentialSolver::KmeansSequentialSolver(Point *workPoints, int numPoints, int numClusters, Point *selectedCentroids) {
+KmeansSequentialSolver::KmeansSequentialSolver(Point* workPoints, int numPoints, int numClusters, Point *selectedCentroids) {
     this->points= workPoints;
     this->numPoints= numPoints;
     this->numClusters=numClusters;
     this->selectedCentroids = selectedCentroids;
-    Kluster clusters[numClusters];
+    Kluster  *tempClusters= new Kluster[numClusters];
     for(int i =0; i < numClusters; i++){
-        clusters[i] = Kluster();
+        tempClusters[i] = Kluster();
         Point centroid = {selectedCentroids[i].x, selectedCentroids[i].y, selectedCentroids[i].z};
-        clusters[i].setCentroid(&centroid);
+        tempClusters[i].setCentroid(&centroid);
     }
-    this->clusters = clusters;
+    this->clusters = tempClusters;
 }
 
 void KmeansSequentialSolver::solve() {
@@ -44,12 +42,16 @@ void KmeansSequentialSolver::solve() {
         }
         maxSSE += minDistance * minDistance;
     }
-    double currentSSE = maxSSE;
+    maxSSE = maxSSE/numPoints;
     std::cout <<"Max SSE = " << maxSSE << "" << std::endl;
 
     // termination condition: if current SSE is < 1% maxSSE or iteration > 100k
+    double currentSSE = 0;
+    double previousSSE = maxSSE;
+    double threshold = 0.1;
     int iteration = 0;
-    while (currentSSE >= (maxSSE / 100) && iteration < 100000) {
+    while (std::abs(previousSSE - currentSSE) >= threshold && iteration < 100000) {
+        previousSSE = currentSSE;
         //clear clusters
         for(int i = 0; i < numClusters; i++){
             clusters[i].clearPoints();
@@ -57,18 +59,18 @@ void KmeansSequentialSolver::solve() {
 
         //assign points to nearest centroid
         for (int i = 0; i < numPoints; i++) {
-            Point point = points[i];
+            Point *point = &points[i];
             double minDistance = std::numeric_limits<double>::max();
             int closestCluster = -1;
             for( int j = 0; j < numClusters; j++){
                 Point *centroid = clusters[j].getCentroid();
-                double distance = point.calculateDistance(*centroid);
+                double distance = point->calculateDistance(*centroid);
                 if (distance < minDistance) {
                     minDistance = distance;
                     closestCluster = j;
                 }
             }
-            clusters[closestCluster].addPoint(&point);
+            clusters[closestCluster].addPoint(point);
         }
 
         //Update centroids
@@ -87,6 +89,7 @@ void KmeansSequentialSolver::solve() {
                 currentSSE += distance * distance;
             }
         }
+        currentSSE = currentSSE/numPoints;
 
         //updating iteration
         iteration++;

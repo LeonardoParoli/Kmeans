@@ -149,8 +149,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/Users/posta/CLionProjects/KmeansSequential/cmake-build-debug",
-		"source" : "C:/Users/posta/CLionProjects/KmeansSequential"
+		"build" : "C:/Users/posta/CLionProjects/Kmeans/cmake-build-debug",
+		"source" : "C:/Users/posta/CLionProjects/Kmeans"
 	},
 	"version" : 
 	{
