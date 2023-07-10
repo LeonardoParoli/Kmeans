@@ -4,12 +4,12 @@
 #include <cmath>
 
 struct Point{
-    float x;
-    float y;
-    float z;
+    double x;
+    double y;
+    double z;
 
-    float calculateDistance(const Point b){
-        float distance = 0.0;
+    double calculateDistance(const Point b){
+        double distance = 0.0;
         distance += pow(this->x - b.x, 2);
         distance += pow(this->y - b.y, 2);
         distance += pow(this->z - b.z, 2);

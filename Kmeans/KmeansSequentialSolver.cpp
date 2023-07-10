@@ -18,7 +18,7 @@ KmeansSequentialSolver::KmeansSequentialSolver(Point* workPoints, int numPoints,
     this->numPoints= numPoints;
     this->numClusters=numClusters;
     this->selectedCentroids = selectedCentroids;
-    Kluster  *tempClusters= new Kluster[numClusters];
+    Kluster *tempClusters= new Kluster[numClusters];
     for(int i =0; i < numClusters; i++){
         tempClusters[i] = Kluster();
         Point centroid = {selectedCentroids[i].x, selectedCentroids[i].y, selectedCentroids[i].z};
@@ -48,7 +48,7 @@ void KmeansSequentialSolver::solve() {
     // termination condition: if current SSE is < 1% maxSSE or iteration > 100k
     double currentSSE = 0;
     double previousSSE = maxSSE;
-    double threshold = 0.1;
+    double threshold = 0.01;
     int iteration = 0;
     while (std::abs(previousSSE - currentSSE) >= threshold && iteration < 100000) {
         previousSSE = currentSSE;

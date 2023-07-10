@@ -1,4 +1,5 @@
 #include <random>
+#include <iostream>
 #include "KmeansInitializer.h"
 
 KmeansInitializer::KmeansInitializer(int numPoints, int numClusters, double coordinateRange, double clusterRadius){
@@ -10,14 +11,36 @@ KmeansInitializer::KmeansInitializer(int numPoints, int numClusters, double coor
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> distribution(-clusterRadius, clusterRadius);
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-
+    double noise = coordinateRange * 0.01;
     int pointCursor = 0;
     int centroidCursor = 0;
     for (int i = 0; i < numClusters; ++i) {
-        float centerX = distribution(gen) + coordinateRange / 2.0;
-        float centerY = distribution(gen) + coordinateRange / 2.0;
-        float centerZ = distribution(gen) + coordinateRange / 2.0;
+        float centerX = std::max(0.0,std::min(coordinateRange,distribution(gen) + coordinateRange / 2.0));
+        float centerY = std::max(0.0,std::min(coordinateRange,distribution(gen) + coordinateRange / 2.0));
+        float centerZ = std::max(0.0,std::min(coordinateRange,distribution(gen) + coordinateRange / 2.0));
+        realCentroids[centroidCursor].x = centerX;
+        realCentroids[centroidCursor].y = centerY;
+        realCentroids[centroidCursor].z = centerZ;
+        std::cout << "real centroid: "<< realCentroids[centroidCursor].x << " " << realCentroids[centroidCursor].y << " " << realCentroids[centroidCursor].z << std::endl;
+        centroidCursor++;
+        for (int j = 0; j < numPoints / numClusters; ++j) {
+            double theta = 2.0 * M_PI * dist(gen);       // azimuthal angle
+            double phi = acos(2.0 * dist(gen) - 1.0);    // polar angle
+            points[pointCursor].x = std::max(0.0, std::min(coordinateRange,centerX + clusterRadius * sin(phi) * cos(theta) + noise * (2.0 * dist(gen) - 1.0)));
+            points[pointCursor].y = std::max(0.0, std::min(coordinateRange,centerY + clusterRadius * sin(phi) * sin(theta) + noise * (2.0 * dist(gen) - 1.0)));
+            points[pointCursor].z = std::max(0.0, std::min(coordinateRange,centerZ + clusterRadius * cos(phi) + noise * (2.0 * dist(gen) - 1.0)));
+            pointCursor++;
+        }
+    }
+    /*  Cubic Version
+    int pointCursor = 0;
+    int centroidCursor = 0;
+    for (int i = 0; i < numClusters; ++i) {
+        float centerX = std::max(0.0,std::min(coordinateRange,distribution(gen) + coordinateRange / 2.0));
+        float centerY = std::max(0.0,std::min(coordinateRange,distribution(gen) + coordinateRange / 2.0));
+        float centerZ = std::max(0.0,std::min(coordinateRange,distribution(gen) + coordinateRange / 2.0));
         realCentroids[centroidCursor].x = centerX;
         realCentroids[centroidCursor].y = centerY;
         realCentroids[centroidCursor].z = centerZ;
@@ -29,6 +52,7 @@ KmeansInitializer::KmeansInitializer(int numPoints, int numClusters, double coor
             pointCursor++;
         }
     }
+    */
 }
 
 KmeansInitializer::~KmeansInitializer() {

@@ -23,11 +23,15 @@ for cluster_num, points in clusters.items():
     x_coords = [point[0] for point in points]
     y_coords = [point[1] for point in points]
     z_coords = [point[2] for point in points]
-    ax.scatter(x_coords, y_coords, z_coords, s=0.5)
+    ax.scatter(x_coords, y_coords, z_coords, s=0.05)
 
 centroids_x_coords = [centroid[0] for centroid in centroids]
 centroids_y_coords = [centroid[1] for centroid in centroids]
 centroids_z_coords = [centroid[2] for centroid in centroids]
 ax.scatter(centroids_x_coords, centroids_y_coords, centroids_z_coords,s=25)
 
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Kmeans clustered points and centroids')
 plt.show()
