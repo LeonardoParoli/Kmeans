@@ -1,17 +1,21 @@
 #include <iostream>
 #include <fstream>
 #include <random>
-#include <algorithm>
+#include <chrono>
+#include <iomanip>
 #include "Kmeans/KmeansInitializer.h"
-#include "Kmeans/KmeansSequentialSolver.h"
+#include "Kmeans/sequential/KmeansSequentialSolver.h"
+#include "Kmeans/parallelOPENMP/KmeansParallelOMPSolver.h"
 
 int main() {
-    int numPoints = 10000;
-    int numClusters = 3;
+    int numPoints = 500000;
+    int numClusters = 15;
     double coordinateRange = 1000;
     double clusterRadius = 250;
-    bool printResults = true;
-    bool parallel = true;
+    bool printResults = false;
+    bool printConsole =false;
+    bool parallelOMP = true;
+    bool parallelCUDA = true;
 
     std::cout << "Initializing Kmeans dataset" << std::endl;
     KmeansInitializer initializer = KmeansInitializer(numPoints,numClusters,coordinateRange,clusterRadius);
@@ -45,7 +49,6 @@ int main() {
         }
     }
 
-
     std::cout << "Selecting K centroids" << std::endl;
     Point selectedCentroids[numClusters];
     std::random_device rd;
@@ -65,14 +68,14 @@ int main() {
 
     }
 
-    std::cout << "Running K-Means..." << std::endl;
+    std::cout << "Running Sequential K-Means..." << std::endl;
     KmeansSequentialSolver solver = KmeansSequentialSolver(points,numPoints,numClusters,selectedCentroids);
-    solver.solve();
+    auto startSequential = std::chrono::high_resolution_clock::now();
+    solver.solve(printConsole);
+    auto endSequential = std::chrono::high_resolution_clock::now();
     Kluster *clusters = solver.getClusters();
-
-    std::cout << "Clustering done, saving results" << std::endl;
     if(printResults) {
-        filePath = folderPath + "/Results/clustered_points.txt";
+        filePath = folderPath + "/Results/Sequential/clustered_points.txt";
         std::ofstream outputResultClustersFile(filePath);
         if (outputResultClustersFile.is_open()) {
             for (int i = 0; i < numClusters; i++) {
@@ -94,7 +97,51 @@ int main() {
         }
     }
 
-    std::cout << "Results saved, terminating..." << std::endl;
+    std::cout <<"///////////////////////////////////////////" << std::endl;
+    std::chrono::time_point startParallelOMP= std::chrono::high_resolution_clock::now();
+    std::chrono::time_point endParallelOMP= std::chrono::high_resolution_clock::now();
+    if(parallelOMP){
+        std::cout << "Running Parallel OMP Kmeans " << std::endl;
+        KmeansParallelOMPSolver parallelOMPsolver = KmeansParallelOMPSolver(points,numPoints,numClusters,selectedCentroids);
+        startParallelOMP = std::chrono::high_resolution_clock::now();
+        parallelOMPsolver.solve(printConsole);
+        endParallelOMP = std::chrono::high_resolution_clock::now();
+        Kluster *ompClusters = parallelOMPsolver.getClusters();
+
+        if(printResults) {
+            filePath = folderPath + "/Results/ParallelOMP/clustered_points.txt";
+            std::ofstream outputResultClustersFile(filePath);
+            if (outputResultClustersFile.is_open()) {
+                for (int i = 0; i < numClusters; i++) {
+                    Kluster cluster = ompClusters[i];
+                    Point centroid = *cluster.getCentroid();
+                    outputResultClustersFile << "Cluster " << i << "{" << std::endl;
+                    outputResultClustersFile << "[" << centroid.x << "," << centroid.y << "," << centroid.z << "]"
+                                             << std::endl;
+                    std::vector<Point *> *clusterPoints = cluster.getPoints();
+                    for (Point *point: *clusterPoints) {
+                        outputResultClustersFile << "(" << point->x << "," << point->y << "," << point->z << ")"
+                                                 << std::endl;
+                    }
+                    outputResultClustersFile << "}" << std::endl;
+                }
+                outputResultClustersFile.close();
+            } else {
+                std::cout << "Unable to open the file." << std::endl;
+            }
+        }
+    }
+
+    auto durationSequential = std::chrono::duration_cast<std::chrono::milliseconds>(endSequential - startSequential).count();
+    long long int durationParallelOMP;
+    if(parallelOMP){
+        durationParallelOMP =  std::chrono::duration_cast<std::chrono::milliseconds>(endParallelOMP - startParallelOMP).count();
+    }
+    std::cout << std::fixed << std::setprecision(4) << "Sequential Execution time: " << durationSequential << " milliseconds" << std::endl;
+    if(parallelOMP){
+        std::cout << std::fixed << std::setprecision(4) << "Parallel Execution time: " << durationParallelOMP << " milliseconds" << std::endl;
+        std::cout << std::fixed << std::setprecision(4) << "Speedup: " << durationSequential/durationParallelOMP << std::endl;
+    }
 
     return 0;
 }

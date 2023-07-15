@@ -51,27 +51,39 @@ build cmake_object_order_depends_target_Kmeans: phony || CMakeFiles/Kmeans.dir
 
 build CMakeFiles/Kmeans.dir/main.cpp.obj: CXX_COMPILER__Kmeans_Debug C$:/Users/posta/CLionProjects/Kmeans/main.cpp || cmake_object_order_depends_target_Kmeans
   DEP_FILE = CMakeFiles\Kmeans.dir\main.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -fopenmp -g -fdiagnostics-color=always -std=gnu++17
   OBJECT_DIR = CMakeFiles\Kmeans.dir
   OBJECT_FILE_DIR = CMakeFiles\Kmeans.dir
 
 build CMakeFiles/Kmeans.dir/Kmeans/KmeansInitializer.cpp.obj: CXX_COMPILER__Kmeans_Debug C$:/Users/posta/CLionProjects/Kmeans/Kmeans/KmeansInitializer.cpp || cmake_object_order_depends_target_Kmeans
   DEP_FILE = CMakeFiles\Kmeans.dir\Kmeans\KmeansInitializer.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -fopenmp -g -fdiagnostics-color=always -std=gnu++17
   OBJECT_DIR = CMakeFiles\Kmeans.dir
   OBJECT_FILE_DIR = CMakeFiles\Kmeans.dir\Kmeans
 
-build CMakeFiles/Kmeans.dir/Kmeans/KmeansSequentialSolver.cpp.obj: CXX_COMPILER__Kmeans_Debug C$:/Users/posta/CLionProjects/Kmeans/Kmeans/KmeansSequentialSolver.cpp || cmake_object_order_depends_target_Kmeans
-  DEP_FILE = CMakeFiles\Kmeans.dir\Kmeans\KmeansSequentialSolver.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+build CMakeFiles/Kmeans.dir/Kmeans/sequential/KmeansSequentialSolver.cpp.obj: CXX_COMPILER__Kmeans_Debug C$:/Users/posta/CLionProjects/Kmeans/Kmeans/sequential/KmeansSequentialSolver.cpp || cmake_object_order_depends_target_Kmeans
+  DEP_FILE = CMakeFiles\Kmeans.dir\Kmeans\sequential\KmeansSequentialSolver.cpp.obj.d
+  FLAGS = -fopenmp -g -fdiagnostics-color=always -std=gnu++17
   OBJECT_DIR = CMakeFiles\Kmeans.dir
-  OBJECT_FILE_DIR = CMakeFiles\Kmeans.dir\Kmeans
+  OBJECT_FILE_DIR = CMakeFiles\Kmeans.dir\Kmeans\sequential
 
 build CMakeFiles/Kmeans.dir/Kmeans/Kluster.cpp.obj: CXX_COMPILER__Kmeans_Debug C$:/Users/posta/CLionProjects/Kmeans/Kmeans/Kluster.cpp || cmake_object_order_depends_target_Kmeans
   DEP_FILE = CMakeFiles\Kmeans.dir\Kmeans\Kluster.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -fopenmp -g -fdiagnostics-color=always -std=gnu++17
   OBJECT_DIR = CMakeFiles\Kmeans.dir
   OBJECT_FILE_DIR = CMakeFiles\Kmeans.dir\Kmeans
+
+build CMakeFiles/Kmeans.dir/Kmeans/parallelOPENMP/KmeansParallelOMPSolver.cpp.obj: CXX_COMPILER__Kmeans_Debug C$:/Users/posta/CLionProjects/Kmeans/Kmeans/parallelOPENMP/KmeansParallelOMPSolver.cpp || cmake_object_order_depends_target_Kmeans
+  DEP_FILE = CMakeFiles\Kmeans.dir\Kmeans\parallelOPENMP\KmeansParallelOMPSolver.cpp.obj.d
+  FLAGS = -fopenmp -g -fdiagnostics-color=always -std=gnu++17
+  OBJECT_DIR = CMakeFiles\Kmeans.dir
+  OBJECT_FILE_DIR = CMakeFiles\Kmeans.dir\Kmeans\parallelOPENMP
+
+build CMakeFiles/Kmeans.dir/Kmeans/parallelCUDA/KmeansParallelCUDASolver.cpp.obj: CXX_COMPILER__Kmeans_Debug C$:/Users/posta/CLionProjects/Kmeans/Kmeans/parallelCUDA/KmeansParallelCUDASolver.cpp || cmake_object_order_depends_target_Kmeans
+  DEP_FILE = CMakeFiles\Kmeans.dir\Kmeans\parallelCUDA\KmeansParallelCUDASolver.cpp.obj.d
+  FLAGS = -fopenmp -g -fdiagnostics-color=always -std=gnu++17
+  OBJECT_DIR = CMakeFiles\Kmeans.dir
+  OBJECT_FILE_DIR = CMakeFiles\Kmeans.dir\Kmeans\parallelCUDA
 
 
 # =============================================================================
@@ -81,8 +93,8 @@ build CMakeFiles/Kmeans.dir/Kmeans/Kluster.cpp.obj: CXX_COMPILER__Kmeans_Debug C
 #############################################
 # Link the executable Kmeans.exe
 
-build Kmeans.exe: CXX_EXECUTABLE_LINKER__Kmeans_Debug CMakeFiles/Kmeans.dir/main.cpp.obj CMakeFiles/Kmeans.dir/Kmeans/KmeansInitializer.cpp.obj CMakeFiles/Kmeans.dir/Kmeans/KmeansSequentialSolver.cpp.obj CMakeFiles/Kmeans.dir/Kmeans/Kluster.cpp.obj
-  FLAGS = -g
+build Kmeans.exe: CXX_EXECUTABLE_LINKER__Kmeans_Debug CMakeFiles/Kmeans.dir/main.cpp.obj CMakeFiles/Kmeans.dir/Kmeans/KmeansInitializer.cpp.obj CMakeFiles/Kmeans.dir/Kmeans/sequential/KmeansSequentialSolver.cpp.obj CMakeFiles/Kmeans.dir/Kmeans/Kluster.cpp.obj CMakeFiles/Kmeans.dir/Kmeans/parallelOPENMP/KmeansParallelOMPSolver.cpp.obj CMakeFiles/Kmeans.dir/Kmeans/parallelCUDA/KmeansParallelCUDASolver.cpp.obj
+  FLAGS = -fopenmp -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Kmeans.dir
   POST_BUILD = cd .

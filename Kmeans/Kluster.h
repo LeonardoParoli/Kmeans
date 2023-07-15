@@ -8,7 +8,7 @@
 class Kluster{
     private:
         std::vector<Point*> points;
-        Point centroid;
+        Point centroid = Point(-1,-1,-1);
 
     public:
         Kluster();

@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-with open('Sequential/clustered_points.txt', 'r') as file:
+with open('clustered_points.txt', 'r') as file:
     lines = file.readlines()
 
 clusters = {}

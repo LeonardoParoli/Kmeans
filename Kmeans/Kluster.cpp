@@ -1,9 +1,7 @@
 #include <random>
 #include "Kluster.h"
 
-Kluster::Kluster(){
-    centroid = {-1,-1,-1};
-}
+Kluster::Kluster()= default;
 
 Kluster::~Kluster() = default;
 

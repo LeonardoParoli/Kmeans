@@ -2,8 +2,8 @@
 #define KMEANSSEQUENTIAL_KMEANSSEQUENTIALSOLVER_H
 
 #include <vector>
-#include "Point.h"
-#include "Kluster.h"
+#include "../Point.h"
+#include "../Kluster.h"
 
 class KmeansSequentialSolver {
     private:
@@ -16,7 +16,7 @@ class KmeansSequentialSolver {
     public:
         KmeansSequentialSolver(Point *workPoints, int numPoints, int numClusters, Point *selectedCentroids);
         ~KmeansSequentialSolver();
-        void solve();
+        void solve(bool printConsole);
         Point *getPoints();
         Point *getSelectedCentroids();
         Kluster *getClusters();

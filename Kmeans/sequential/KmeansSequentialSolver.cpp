@@ -27,7 +27,7 @@ KmeansSequentialSolver::KmeansSequentialSolver(Point* workPoints, int numPoints,
     this->clusters = tempClusters;
 }
 
-void KmeansSequentialSolver::solve() {
+void KmeansSequentialSolver::solve(bool printConsole) {
     //Calculate base SSE
     double maxSSE = 0.0;
     for (int i = 0; i < numPoints; i++) {
@@ -43,14 +43,16 @@ void KmeansSequentialSolver::solve() {
         maxSSE += minDistance * minDistance;
     }
     maxSSE = maxSSE/numPoints;
-    std::cout <<"Max SSE = " << maxSSE << "" << std::endl;
+    if(printConsole){
+        std::cout <<"Max SSE = " << maxSSE << "" << std::endl;
+    }
 
     // termination condition: if current SSE is < 1% maxSSE or iteration > 100k
     double currentSSE = 0;
     double previousSSE = maxSSE;
     double threshold = 0.01;
     int iteration = 0;
-    while (std::abs(previousSSE - currentSSE) >= threshold && iteration < 100000) {
+    while (std::abs(previousSSE - currentSSE) >= threshold && iteration < 100) {
         previousSSE = currentSSE;
         //clear clusters
         for(int i = 0; i < numClusters; i++){
@@ -93,7 +95,9 @@ void KmeansSequentialSolver::solve() {
 
         //updating iteration
         iteration++;
-        std::cout <<"Current SSE = " << currentSSE << "" << std::endl;
+        if(printConsole){
+            std::cout <<"Current SSE = " << currentSSE << "" << std::endl;
+        }
     }
 }
 
