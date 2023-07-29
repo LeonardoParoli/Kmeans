@@ -1,7 +1,3 @@
-//
-// Created by posta on 11/07/2023.
-//
-
 #include <iostream>
 #include <omp.h>
 #include <random>
@@ -51,7 +47,6 @@ void KmeansParallelOMPSolver::solve(bool printConsole) {
         }
         maxSSE += minDistance * minDistance;
     }
-    #pragma omp barrier
     maxSSE = maxSSE/numPoints;
     if(printConsole){
         std::cout <<"Max SSE = " << maxSSE << "" << std::endl;
@@ -105,10 +100,10 @@ void KmeansParallelOMPSolver::solve(bool printConsole) {
     for(int j=0; j<numClusters; j++){
         currentCentroids[j] = {selectedCentroids[j].x,selectedCentroids[j].y,selectedCentroids[j].z};
     }
-    while (std::abs(previousSSE - currentSSE) >= threshold && iteration < 100) {
+    while (std::abs(previousSSE - currentSSE) >= threshold && iteration < 10000) {
         previousSSE = currentSSE;
         //clear clusters
-        #pragma omp parallel for shared(maxThreads,numClusters,threadClustersArray,threadCentroidsArray,currentCentroids) default(none)
+        #pragma omp parallel for collapse(2) shared(maxThreads,numClusters,threadClustersArray,threadCentroidsArray,currentCentroids) default(none)
         for(int i = 0; i < maxThreads; i++){
             for(int j = 0; j < numClusters; j++){
                 threadClustersArray[i][j].clear();
@@ -183,7 +178,6 @@ void KmeansParallelOMPSolver::solve(bool printConsole) {
                 currentSSE += distance * distance;
             }
         }
-        #pragma omp barrier
         currentSSE = currentSSE/numPoints;
         if(printConsole){
             std::cout <<"Current SSE = " << currentSSE << "" << std::endl;

@@ -8,14 +8,13 @@
 #include "Kmeans/parallelOPENMP/KmeansParallelOMPSolver.h"
 
 int main() {
-    int numPoints = 500000;
+    int numPoints = 10000;
     int numClusters = 15;
     double coordinateRange = 1000;
     double clusterRadius = 250;
-    bool printResults = false;
-    bool printConsole =false;
+    bool printResults = true;
+    bool printConsole =true;
     bool parallelOMP = true;
-    bool parallelCUDA = true;
 
     std::cout << "Initializing Kmeans dataset" << std::endl;
     KmeansInitializer initializer = KmeansInitializer(numPoints,numClusters,coordinateRange,clusterRadius);
@@ -101,7 +100,7 @@ int main() {
     std::chrono::time_point startParallelOMP= std::chrono::high_resolution_clock::now();
     std::chrono::time_point endParallelOMP= std::chrono::high_resolution_clock::now();
     if(parallelOMP){
-        std::cout << "Running Parallel OMP Kmeans " << std::endl;
+        std::cout << "Running Parallel OMP K-Means " << std::endl;
         KmeansParallelOMPSolver parallelOMPsolver = KmeansParallelOMPSolver(points,numPoints,numClusters,selectedCentroids);
         startParallelOMP = std::chrono::high_resolution_clock::now();
         parallelOMPsolver.solve(printConsole);
@@ -140,7 +139,7 @@ int main() {
     std::cout << std::fixed << std::setprecision(4) << "Sequential Execution time: " << durationSequential << " milliseconds" << std::endl;
     if(parallelOMP){
         std::cout << std::fixed << std::setprecision(4) << "Parallel Execution time: " << durationParallelOMP << " milliseconds" << std::endl;
-        std::cout << std::fixed << std::setprecision(4) << "Speedup: " << durationSequential/durationParallelOMP << std::endl;
+        std::cout << std::fixed << std::setprecision(4) << "Speedup: " << double(durationSequential)/double(durationParallelOMP) << std::endl;
     }
 
     return 0;

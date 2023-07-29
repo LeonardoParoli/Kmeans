@@ -52,7 +52,7 @@ void KmeansSequentialSolver::solve(bool printConsole) {
     double previousSSE = maxSSE;
     double threshold = 0.01;
     int iteration = 0;
-    while (std::abs(previousSSE - currentSSE) >= threshold && iteration < 100) {
+    while (std::abs(previousSSE - currentSSE) >= threshold && iteration < 10000) {
         previousSSE = currentSSE;
         //clear clusters
         for(int i = 0; i < numClusters; i++){

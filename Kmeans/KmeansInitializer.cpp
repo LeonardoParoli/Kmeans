@@ -2,6 +2,7 @@
 #include <iostream>
 #include "KmeansInitializer.h"
 
+
 KmeansInitializer::KmeansInitializer(int numPoints, int numClusters, double coordinateRange, double clusterRadius){
     this->numPoints = numPoints;
     this->numClusters = numClusters;
@@ -26,7 +27,7 @@ KmeansInitializer::KmeansInitializer(int numPoints, int numClusters, double coor
         std::cout << "real centroid: "<< realCentroids[centroidCursor].x << " " << realCentroids[centroidCursor].y << " " << realCentroids[centroidCursor].z << std::endl;
         centroidCursor++;
         for (int j = 0; j < numPoints / numClusters; ++j) {
-            double theta = 2.0 * M_PI * dist(gen);       // azimuthal angle
+            double theta = 2.0 * 3.146 * dist(gen);       // azimuthal angle
             double phi = acos(2.0 * dist(gen) - 1.0);    // polar angle
             points[pointCursor].x = std::max(0.0, std::min(coordinateRange,centerX + clusterRadius * sin(phi) * cos(theta) + noise * (2.0 * dist(gen) - 1.0)));
             points[pointCursor].y = std::max(0.0, std::min(coordinateRange,centerY + clusterRadius * sin(phi) * sin(theta) + noise * (2.0 * dist(gen) - 1.0)));
