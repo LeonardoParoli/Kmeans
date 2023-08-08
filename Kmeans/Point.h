@@ -28,5 +28,4 @@ struct Point{
         return sqrt(distance);
     };
 };
-
 #endif //KMEANSSEQUENTIAL_POINT_H

@@ -8,8 +8,8 @@
 #include "Kmeans/parallelOPENMP/KmeansParallelOMPSolver.h"
 
 int main() {
-    int numPoints = 10000;
-    int numClusters = 15;
+    int numPoints = 100000;
+    int numClusters = 10;
     double coordinateRange = 1000;
     double clusterRadius = 250;
     bool printResults = true;
