@@ -76,6 +76,10 @@ void KmeansParallelOMPSolver::solve(bool printConsole) {
         for(int i = 0; i<numClusters; i++){
             clusterSizes[i] = 0;
         }
+        #pragma omp parallel for shared(assignments) default(none)
+        for(int i = 0; i < numPoints; i++){
+            assignments[i]=-1;
+        }
         //assign points to nearest centroid
         #pragma omp parallel for shared(assignments, clusterSizes, currentCentroids) default(none)
         for (int i = 0; i < numPoints; i++) {

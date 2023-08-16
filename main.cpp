@@ -8,12 +8,12 @@
 #include "Kmeans/parallelOPENMP/KmeansParallelOMPSolver.h"
 
 int main() {
-    int numPoints = 100000;
-    int numClusters = 10;
+    int numPoints = 10000;
+    int numClusters = 40;
     double coordinateRange = 1000;
     double clusterRadius = 250;
-    bool printResults = true;
-    bool printConsole =true;
+    bool printResults = false;
+    bool printConsole = false;
     bool parallelOMP = true;
 
     std::cout << "Initializing Kmeans dataset" << std::endl;
