@@ -107,32 +107,30 @@ void KmeansParallelOMPSolver::solve(bool printConsole) {
         }
         #pragma omp parallel default(none) shared(assignments, points, newCentroids)
         {
-            auto* privateAccumulators = new Point[numClusters];
-
+            auto* accumulator = new Point[numClusters];
             #pragma omp for
             for (int i = 0; i < numClusters; i++) {
-                privateAccumulators[i] = {0.0, 0.0, 0.0};
+                accumulator[i] = {0.0, 0.0, 0.0};
             }
-
             #pragma omp for
             for (int i = 0; i < numPoints; i++) {
                 int clusterIndex = assignments[i];
                 #pragma omp atomic
-                privateAccumulators[clusterIndex].x += points[i].x;
+                accumulator[clusterIndex].x += points[i].x;
                 #pragma omp atomic
-                privateAccumulators[clusterIndex].y += points[i].y;
+                accumulator[clusterIndex].y += points[i].y;
                 #pragma omp atomic
-                privateAccumulators[clusterIndex].z += points[i].z;
+                accumulator[clusterIndex].z += points[i].z;
             }
             #pragma omp critical
             {
                 for (int i = 0; i < numClusters; i++) {
-                    newCentroids[i].x += privateAccumulators[i].x;
-                    newCentroids[i].y += privateAccumulators[i].y;
-                    newCentroids[i].z += privateAccumulators[i].z;
+                    newCentroids[i].x += accumulator[i].x;
+                    newCentroids[i].y += accumulator[i].y;
+                    newCentroids[i].z += accumulator[i].z;
                 }
             }
-            delete[] privateAccumulators;
+            delete[] accumulator;
         }
 
         #pragma omp parallel for shared(newCentroids,currentCentroids,clusterSizes) default(none)
