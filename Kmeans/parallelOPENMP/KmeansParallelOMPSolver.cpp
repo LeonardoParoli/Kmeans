@@ -6,15 +6,12 @@
 Point *KmeansParallelOMPSolver::getPoints() {
     return points;
 }
-
 Kluster *KmeansParallelOMPSolver::getClusters() {
     return clusters;
 }
-
 KmeansParallelOMPSolver::~KmeansParallelOMPSolver() {
     delete[] clusters;
 }
-
 KmeansParallelOMPSolver::KmeansParallelOMPSolver(Point* workPoints, int numPoints, int numClusters, Point *selectedCentroids) {
     this->points= workPoints;
     this->numPoints= numPoints;
@@ -52,9 +49,6 @@ void KmeansParallelOMPSolver::solve(bool printConsole) {
     }
 
     auto* assignments = new int[numPoints];
-    for(int i = 0; i < numPoints; i++){
-        assignments[i]=-1;
-    }
     auto* clusterSizes = new int[numClusters];
     for(int i = 0; i<numClusters; i++){
         clusterSizes[i] = 0;
@@ -76,10 +70,6 @@ void KmeansParallelOMPSolver::solve(bool printConsole) {
         for(int i = 0; i<numClusters; i++){
             clusterSizes[i] = 0;
         }
-        #pragma omp parallel for shared(assignments) default(none)
-        for(int i = 0; i < numPoints; i++){
-            assignments[i]=-1;
-        }
         //assign points to nearest centroid
         #pragma omp parallel for shared(assignments, clusterSizes, currentCentroids) default(none)
         for (int i = 0; i < numPoints; i++) {
@@ -100,6 +90,7 @@ void KmeansParallelOMPSolver::solve(bool printConsole) {
             clusterSizes[closestCluster]++;
         }
 
+        //selecting new centroids
         auto* newCentroids = new Point[numClusters];
         #pragma omp parallel  for shared(newCentroids) default(none)
         for (int i = 0; i < numClusters; i++) {

@@ -4,15 +4,12 @@
 Point *KmeansSequentialSolver::getPoints() {
     return points;
 }
-
 Kluster *KmeansSequentialSolver::getClusters() {
     return clusters;
 }
-
 KmeansSequentialSolver::~KmeansSequentialSolver() {
     delete[] clusters;
 }
-
 KmeansSequentialSolver::KmeansSequentialSolver(Point* workPoints, int numPoints, int numClusters, Point *selectedCentroids) {
     this->points= workPoints;
     this->numPoints= numPoints;

@@ -8,11 +8,11 @@
 #include "Kmeans/parallelOPENMP/KmeansParallelOMPSolver.h"
 
 int main() {
-    int numPoints = 10000;
+    int numPoints = 50000;
     int numClusters = 20;
     double coordinateRange = 1000;
     double clusterRadius = 250;
-    bool printResults = false;
+    bool printResults = true;
     bool printConsole = false;
     bool parallelOMP = true;
 
@@ -108,7 +108,7 @@ int main() {
         Kluster *ompClusters = parallelOMPsolver.getClusters();
 
         if(printResults) {
-            filePath = folderPath + "/Results/ParallelOMP/clustered_points.txt";
+            filePath = folderPath + "/Results/ParallelOMP/clustered_pointsTest.txt";
             std::ofstream outputResultClustersFile(filePath);
             if (outputResultClustersFile.is_open()) {
                 for (int i = 0; i < numClusters; i++) {
@@ -139,7 +139,7 @@ int main() {
     std::cout << std::fixed << std::setprecision(4) << "Sequential Execution time: " << durationSequential << " milliseconds" << std::endl;
     if(parallelOMP){
         std::cout << std::fixed << std::setprecision(4) << "Parallel Execution time: " << durationParallelOMP << " milliseconds" << std::endl;
-        std::cout << std::fixed << std::setprecision(4) << "Speedup: " << double(durationSequential)/double(durationParallelOMP) << std::endl;
+        std::cout << std::fixed << std::setprecision(4) << "Speedup: " << double(durationSequential)/double(durationParallelOMP)<< std::endl;
     }
 
     return 0;
